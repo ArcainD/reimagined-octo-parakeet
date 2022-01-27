@@ -4,23 +4,25 @@ nested_list = [
     [1, 2, None],
 ]
 
+nested_list2 = [
+    ['a', 'b', 'c', [3, 4, 6, 78, ['FA', 'fs']]],
+    ['d', 'e', 'f', 'h', False, [['dfhg', [23]], 'erg', ['rg']], 'aegf'],
+    [1, 2, None],
+]
+
 
 class FlatIterator:
 
     def __init__(self, nested_list):
-
         self.nested_list = nested_list
         self.outer_list_index = 0
         self.inner_list_index = 0
 
     def __iter__(self):
-
         return self
 
     def __next__(self):
-
         if self.outer_list_index < len(nested_list):
-
             if self.inner_list_index < \
                     len(nested_list[self.outer_list_index]) - 1:
                 res = nested_list[self.outer_list_index][self.inner_list_index]
@@ -36,27 +38,34 @@ class FlatIterator:
 
 
 def flat_generator(nested_list):
-    outer_index = 0
-    inner_index = 0
-    while outer_index < len(nested_list):
-        if inner_index < len(nested_list[outer_index]):
-            yield nested_list[outer_index][inner_index]
-            inner_index += 1
-        elif inner_index == len(nested_list[outer_index]):
-            outer_index += 1
-            inner_index = 0
+    for item in nested_list:
+        for i in item:
+            yield i
+
+
+def flat_generator2(nested_list):
+    for item in nested_list:
+        if type(item) == list:
+            for x in flat_generator2(item):
+                yield x
+        else:
+            yield item
+
 
 if __name__ == '__main__':
 
     for i in FlatIterator(nested_list):
         print(i)
-    print('===================================')
+    print('')
 
     flat_list = [item for item in FlatIterator(nested_list)]
     print(flat_list)
-    print('===================================')
+    print('')
 
     for i in flat_generator(nested_list):
         print(i)
+    print('')
 
+    for i in flat_generator2(nested_list2):
+        print(i)
 
