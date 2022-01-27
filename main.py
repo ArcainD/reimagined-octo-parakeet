@@ -68,4 +68,3 @@ if __name__ == '__main__':
 
     for i in flat_generator2(nested_list2):
         print(i)
-
