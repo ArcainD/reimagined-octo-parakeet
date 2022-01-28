@@ -42,6 +42,9 @@ def flat_generator(nested_list):
         for i in item:
             yield i
 
+    # gen = (i for item in nested_list for i in item)
+    # return gen
+
 
 def flat_generator2(nested_list):
     for item in nested_list:
